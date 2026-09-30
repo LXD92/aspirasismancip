@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Aspirasi Digital MPK Mahardika SMAN 1 Cipari</title>
+  
+  <!-- Preconnect & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- External CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- SVG Filter untuk Refraksi Liquid -->
+  <svg width="0" height="0" style="position:absolute; display:none;">
+    <filter id="liquid-filter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
+
+  <div class="progress-bar" id="scroll-progress"></div>
+
+  <!-- Background Animasi -->
+  <div class="aurora-bg">
+    <div class="aurora-layer aurora-1"></div>
+    <div class="aurora-layer aurora-2"></div>
+    <div class="aurora-layer aurora-3"></div>
+  </div>
+  <div class="parallax-container" id="doodle-container">
+    <div class="parallax-layer layer-1" data-speed="0.2"></div>
+    <div class="parallax-layer layer-2" data-speed="0.5"></div>
+    <div class="parallax-layer layer-3" data-speed="0.8"></div>
+  </div>
+
+  <!-- Intro Screen -->
+  <div id="intro">
+    <img src="LOGO_MPK_PLACEHOLDER" alt="Logo MPK" class="intro-logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iIzJGOUJGNCIvPjwvc3ZnPg=='">
+    <h1 class="intro-title">Aspirasi Digital<br>MPK Mahardika</h1>
+    <p class="intro-hint">Ketuk untuk masuk</p>
+  </div>
+
+  <!-- Navigasi -->
+  <nav class="glass refract" id="main-nav">
+    <div id="nav-indicator"></div>
+    <div class="nav-item active" data-target="beranda" onclick="navTo('beranda')">
+      <span class="nav-icon">🏠</span><span class="nav-label">Beranda</span>
+    </div>
+    <div class="nav-item" data-target="aspirasi" onclick="navTo('aspirasi')">
+      <span class="nav-icon">💡</span><span class="nav-label">Aspirasi</span>
+    </div>
+    <div class="nav-item locked" data-target="event" id="nav-event" onclick="handleEventNav()">
+      <span class="nav-icon">📅</span><span class="nav-label">Event</span>
+      <span class="nav-lock-icon">🔒</span>
+    </div>
+    <div class="nav-item" data-target="tentang" onclick="navTo('tentang')">
+      <span class="nav-icon">ℹ️</span><span class="nav-label">Tentang</span>
+    </div>
+  </nav>
+
+  <!-- Konten Utama -->
+  <main>
+    <!-- Tab Beranda -->
+    <div id="tab-beranda" class="tab-panel active">
+      <div class="hero">
+        <div class="logos">
+          <img src="LOGO_SMANCIP_PLACEHOLDER" alt="SMANCIP" onerror="this.style.display='none'">
+          <img src="LOGO_MPK_PLACEHOLDER" alt="MPK" onerror="this.style.display='none'">
+        </div>
+        <h1>Suaramu,<br>Langkah Bersama.</h1>
+        <p>Wadah aspirasi anonim, aman, dan transparan untuk seluruh siswa SMAN 1 Cipari.</p>
+      </div>
+
+      <div class="id-card-container">
+        <div class="lanyard"></div>
+        <div class="id-card glass refract" id="id-card">
+          <img src="LOGO_MPK_PLACEHOLDER" alt="Logo MPK" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iIzJGOUJGNCIvPjwvc3ZnPg=='">
+          <h3>MPK Mahardika</h3>
+          <p>SUARA KAMU PENTING</p>
+          <div style="margin-top:auto; font-size:10px; opacity:0.5;">ID: ANONIM-26</div>
+        </div>
+      </div>
+
+      <div class="stats-container">
+        <div class="stat-box glass" style="padding: 16px; border-radius: 16px; min-width: 120px;">
+          <div class="stat-num" id="stat-total">0</div>
+          <div class="stat-label">Aspirasi Aktif</div>
+        </div>
+        <div class="stat-box glass" style="padding: 16px; border-radius: 16px; min-width: 120px;">
+          <div class="stat-num" id="stat-selesai">0</div>
+          <div class="stat-label">Terselesaikan</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Aspirasi -->
+    <div id="tab-aspirasi" class="tab-panel">
+      <div class="segment-control">
+        <div class="segment-indicator" id="asp-indicator"></div>
+        <div class="segment-btn active" onclick="switchAspTab('form')">Isi Aspirasi</div>
+        <div class="segment-btn" onclick="switchAspTab('list')">Daftar</div>
+      </div>
+
+      <div id="asp-form-view">
+        <div class="glass" style="padding: 24px; border-radius: 24px;">
+          <div class="form-group">
+            <textarea id="asp-input" placeholder="Tuliskan aspirasi, kritik, atau saranmu di sini..." maxlength="1000" oninput="updateCharCount('asp')"></textarea>
+            <div class="form-meta">
+              <span>🔒 Otomatis anonim</span>
+              <span id="asp-count">0/1000</span>
+            </div>
+          </div>
+          <button class="btn-main glass-btn" id="btn-submit-asp" onclick="submitAspirasi()">
+            Kirim Aspirasi
+          </button>
+        </div>
+      </div>
+
+      <div id="asp-list-view" class="hidden-force">
+        <div style="display:flex; justify-content:flex-end; margin-bottom:16px;">
+          <button onclick="loadAspirasi(true)" style="background:transparent; color:var(--nav-blue); font-weight:600; cursor:pointer; border:none;">↻ Refresh</button>
+        </div>
+        <div class="list-container" id="asp-list-container">
+          <!-- Skeletons / Cards go here -->
+        </div>
+        <div style="text-align:center; margin-top:16px;">
+          <button id="btn-load-more-asp" onclick="loadAspirasi()" style="display:none; background:rgba(0,0,0,0.05); padding:8px 16px; border-radius:16px; border:none; cursor:pointer;">Muat Lebih Banyak</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Event -->
+    <div id="tab-event" class="tab-panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px;">
+        <h2 style="font-family:var(--font-head); color:var(--nav-blue-dark);">Event Khusus</h2>
+        <button onclick="loadEvents()" style="background:transparent; color:var(--nav-blue); font-weight:600; cursor:pointer; border:none;">↻ Refresh</button>
+      </div>
+      
+      <div id="admin-add-event" class="admin-event-tools glass" style="border-radius:16px; margin-bottom:16px; padding:16px;">
+        <button onclick="adminCreateEvent()" style="background:var(--text-main); color:#fff; padding:8px 16px; border-radius:8px; border:none; cursor:pointer; font-size:13px;">+ Tambah Event Baru</button>
+      </div>
+
+      <div class="list-container" id="event-list-container">
+        <!-- Event cards go here -->
+      </div>
+    </div>
+
+    <!-- Tab Tentang -->
+    <div id="tab-tentang" class="tab-panel">
+      <div class="glass" style="padding: 32px 24px; border-radius: 24px;">
+        <h2 style="font-family:var(--font-head); color:var(--nav-blue-dark); text-align:center; margin-bottom:32px;">Cara Kerja</h2>
+        
+        <div class="step-box">
+          <div class="step-num">1</div>
+          <div>
+            <h3 style="font-size:16px; margin-bottom:4px;">Kirim Aspirasi</h3>
+            <p style="font-size:14px; opacity:0.8;">Tuliskan suaramu tanpa takut. Sistem kami dijamin anonim—tidak ada data pribadi yang disimpan.</p>
+          </div>
+        </div>
+        
+        <div class="step-box">
+          <div class="step-num">2</div>
+          <div>
+            <h3 style="font-size:16px; margin-bottom:4px;">Ditinjau MPK</h3>
+            <p style="font-size:14px; opacity:0.8;">Pengurus akan mereview dan memberikan status: <span style="color:#8A6D00; font-weight:600;">Hold</span> (Menunggu) atau <span style="color:#005085; font-weight:600;">Diproses</span>.</p>
+          </div>
+        </div>
+        
+        <div class="step-box">
+          <div class="step-num">3</div>
+          <div>
+            <h3 style="font-size:16px; margin-bottom:4px;">Ditindaklanjuti</h3>
+            <p style="font-size:14px; opacity:0.8;">Aspirasi yang diteruskan ke sekolah akan ditandai <span style="color:var(--success); font-weight:600;">Selesai</span> setelah ada kejelasan.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Admin Float Button -->
+  <div class="btn-admin-float" id="btn-admin-toggle" onclick="toggleAdmin()">🔒</div>
+
+  <!-- Admin Modal -->
+  <div id="admin-modal">
+    <div class="modal-content glass">
+      <h3 style="font-family:var(--font-head); margin-bottom:8px;">Akses Pengurus</h3>
+      <p style="font-size:13px; opacity:0.7;">Masukkan kode untuk mengelola aspirasi.</p>
+      <input type="password" id="admin-code-input" placeholder="••••••">
+      <div style="display:flex; gap:8px;">
+        <button style="flex:1; padding:12px; border-radius:12px; border:none; background:rgba(0,0,0,0.05); cursor:pointer;" onclick="closeAdminModal()">Batal</button>
+        <button style="flex:1; padding:12px; border-radius:12px; border:none; background:var(--nav-blue); color:#fff; cursor:pointer;" onclick="verifyAdmin()">Masuk</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- External JS -->
+  <script src="script.js"></script>
+</body>
+</html>
