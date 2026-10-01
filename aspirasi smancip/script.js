@@ -1340,7 +1340,7 @@ async function doAdminLogin(password){
   const r = await rawFetch('/auth/v1/token?grant_type=password', {
     method: 'POST',
     headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: ADMIN_EMAIL, password: `mpk2026` })
+    body: JSON.stringify({ email: ADMIN_EMAIL, password })
   }).then(async res => {
     const data = await res.json().catch(() => null);
     return { ok: res.ok, status: res.status, data };
